@@ -7,6 +7,7 @@
     "start": "node index.js",
     "build": "webpack --progress --color",
     "watch": "webpack --progress --color --watch",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
