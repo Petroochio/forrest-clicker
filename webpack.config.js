@@ -1,5 +1,6 @@
 /* eslint-disable */
 var path = require('path');
+var Copy = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -24,4 +25,8 @@ module.exports = {
       },
     ],
   },
+
+  plugins: [
+    new Copy([{ from: 'static' }])
+  ],
 };
