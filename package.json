@@ -28,6 +28,7 @@
     "copy-webpack-plugin": "^1.1.1",
     "express": "^4.13.4",
     "ramda": "^0.19.1",
+    "three": "^0.77.1",
     "webpack": "^1.12.14"
   },
   "devDependencies": {
