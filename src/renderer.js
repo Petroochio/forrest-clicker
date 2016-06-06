@@ -35,6 +35,7 @@ export const init = () => {
   camera.lookAt(new THREE.Vector3());
 
   scene.add(Tree());
+  renderSpace.addEventListener('click', () => scene.children[0].scale.multiplyScalar(1.03));
 
   const light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(1, 1, 1);
