@@ -3,10 +3,13 @@ import THREE, { Clock, Scene, WebGLRenderer } from 'three';
 
 // Local
 import { Tree } from './factories';
+import { doRaycastIntersect } from './controls/click';
 
 const clock = new Clock();
 const scene = new Scene();
 const renderer = new WebGLRenderer({ antialias: true });
+const clickableItems = [];
+let mouseProjection = { x: 0, y: 0 };
 
 let renderSpace;
 let camera;
@@ -26,6 +29,20 @@ const makeCamera = () =>
     1,
     1000);
 
+// Refactor this shitshow man
+const addTempSatics = () => {
+  const tree1 = Tree();
+  const tree2 = Tree();
+
+  tree1.position.y = 1;
+  tree1.position.x = 1;
+
+  scene.add(tree1);
+  scene.add(tree2);
+  clickableItems.push(tree1);
+  clickableItems.push(tree2);
+};
+
 export const init = () => {
   renderSpace = document.getElementById('renderer');
 
@@ -34,8 +51,16 @@ export const init = () => {
   camera.position.y = 7;
   camera.lookAt(new THREE.Vector3());
 
-  scene.add(Tree());
-  renderSpace.addEventListener('click', () => scene.children[0].scale.multiplyScalar(1.03));
+  addTempSatics();
+  renderSpace.addEventListener('mousemove', ({ target, offsetX, offsetY }) => {
+    mouseProjection = ({
+      x: (offsetX / target.scrollWidth) * 2 - 1,
+      y: -(offsetY / target.scrollHeight) * 2 + 1,
+    });
+  });
+
+  renderSpace.addEventListener('mouseup', () =>
+    doRaycastIntersect(camera, clickableItems, mouseProjection.x, mouseProjection.y));
 
   const light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(1, 1, 1);
