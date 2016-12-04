@@ -1,39 +1,50 @@
 {
-  "name": "forrest-clicker",
+  "name": "text-abox",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "webpack --progress --color",
-    "watch": "webpack --progress --color --watch",
-    "postinstall": "npm run build",
+    "start": "node src/index.js",
+    "build": "webpack",
+    "lint": "eslint ./src",
+    "build:watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Petroochio/forrest-clicker.git"
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Petroochio/forrest-clicker/issues"
-  },
-  "homepage": "https://github.com/Petroochio/forrest-clicker#readme",
+  "license": "ISC",
   "dependencies": {
-    "babel-core": "^6.6.5",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.6.0",
-    "body-parser": "^1.15.0",
-    "copy-webpack-plugin": "^1.1.1",
-    "express": "^4.13.4",
-    "ramda": "^0.19.1",
-    "three": "^0.77.1",
-    "webpack": "^1.12.14"
+    "@cycle/base": "^4.1.1",
+    "@cycle/core": "^7.0.0",
+    "@cycle/dom": "12.1.0",
+    "@cycle/isolate": "^1.4.0",
+    "@cycle/most-run": "^4.1.3",
+    "aframe": "^0.3.2",
+    "aframe-mouse-cursor-component": "^0.2.1",
+    "kframe": "^0.3.0",
+    "most": "^1.0.4",
+    "ramda": "^0.22.1",
+    "socket.io": "^1.3.4",
+    "xstream": "^6.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.6.5",
-    "eslint": "^2.3.0",
-    "eslint-config-airbnb": "^6.1.0"
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "css-loader": "^0.24.0",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb-base": "^10.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.2"
   }
 }

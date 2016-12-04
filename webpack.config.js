@@ -1,32 +1,39 @@
-/* eslint-disable */
 var path = require('path');
-var Copy = require('copy-webpack-plugin');
+var ExtractText = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/app.js',
+    app: './src/index',
   },
 
   output: {
     path: path.resolve('build'),
-    filename: 'app.js',
-    publicPath: '/build/',
+    filename: '[name].js',
   },
 
   module: {
     loaders: [
       {
         test: /\.js$/,
-        include: [
-          path.resolve(__dirname, 'src'),
-        ],
-        exclude: /node_modules/,
+        exclude: /(node_modules|build)/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractText.extract('style-loader', 'css-loader!sass-loader')
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2($|\?))$/,
+        loader: 'url-loader?limit=30000&name=[name]-[hash].[ext]'
+      },
+      {
+        test: /\.(otf|ttf|eot?)(\?[a-z0-9=&.]+)?$/,
+        loader: 'file-loader?name=fonts/[name].[ext]'
       },
     ],
   },
 
   plugins: [
-    new Copy([{ from: 'static' }])
-  ],
+    new ExtractText('[name].css')
+  ]
 };
