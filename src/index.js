@@ -1,16 +1,18 @@
 // Aframe setup
 import 'aframe';
-import 'kframe';
-import 'aframe-mouse-cursor-component';
-import Cycle from '@cycle/most-run';
+import run from '@cycle/run';
 import { makeDOMDriver } from '@cycle/dom';
-// Main Component
-import ForrestClicker from './components/ForrestClicker';
+import { timeDriver } from '@cycle/time';
 
-const main = ForrestClicker;
-const makeDrivers = () =>
-  ({
-    DOM: makeDOMDriver('#app_container'),
-  });
+import './aframe-addons';
+import ForrestClicker from './app';
 
-window.onload = () => Cycle.run(main, makeDrivers());
+function makeDrivers() {
+  const drivers = {
+    DOM: makeDOMDriver('#root'),
+    Time: timeDriver,
+  };
+  return drivers;
+}
+
+window.onload = () => run(ForrestClicker, makeDrivers());
