@@ -1,5 +1,6 @@
 import xs from 'xstream';
 import { h } from '@cycle/dom';
+import { clamp } from 'ramda';
 
 import { aEntity, aSky } from './utils/AframeHyperscript';
 import TreeCollection from './TreeCollection';
@@ -11,6 +12,14 @@ const earthProps = {
     geometry: 'primitive: sphere; radius: 1; segmentsWidth: 15; segmentsHeight: 15;',
   },
 };
+
+function intent(sources) {
+  const { Time, DOM } = sources;
+}
+
+function model(actions) {
+
+}
 
 function view(prop$, tree$) {
   return xs.combine(prop$, tree$).map(([props, trees]) =>
@@ -26,11 +35,10 @@ function view(prop$, tree$) {
 }
 
 function Planet(sources) {
-  const { DOM } = sources;
-  const trees = TreeCollection({ DOM });
+  const trees = TreeCollection(sources);
 
   return {
-    DOM: view(xs.of({ rotation: { x: 0 } }), trees.DOM),
+    DOM: view(sources.rotation$, trees.DOM),
   };
 }
 

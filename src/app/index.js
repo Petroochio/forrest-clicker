@@ -27,11 +27,11 @@ function intent(sources) {
 
 function model(sources, actions) {
   const { plantClick$, mouseUp$, mouseDown$, mouseMove$ } = actions;
+
   const mouseState$ = xs.merge(mouseUp$, mouseDown$)
     .compose(sources.Time.throttle(20));
-
   const clampYRot = clamp(-1, 1);
-  const envProp$ = xs.combine(mouseState$, mouseMove$)
+  const planetRotation$ = xs.combine(mouseState$, mouseMove$)
     .filter(([hold, _]) => hold)
     .map(([_, rot]) => rot)
     .fold(
@@ -42,20 +42,20 @@ function model(sources, actions) {
     .startWith({ rotation: { x: 0, y: 0 } });
 
   return {
-    envProp$,
+    planetRotation$,
     addTree$: plantClick$,
   };
 }
 
 function view(state$) {
   return state$.map(sceneEntities =>
-    h('div',
+    h(
+      'div',
       [
         h('section#ui', [h('button#plant-tree', 'Plant New Tree')]),
         aScene(sceneEntities),
       ],
-    ),
-  );
+    ));
 }
 
 function ForrestClicker(sources) {
@@ -63,9 +63,10 @@ function ForrestClicker(sources) {
 
   const actions = intent(sources);
   const state = model(sources, actions);
+  const { addTree$, planetRotation$ } = state;
 
   const cam = Camera({ DOM, prop$: xs.of({}) });
-  const planet = Planet({ DOM });
+  const planet = Planet({ DOM, addTree$, rotation$: planetRotation$ });
   const sceneDom$ = xs.combine(planet.DOM, cam.DOM);
   const vdom$ = view(sceneDom$);
 

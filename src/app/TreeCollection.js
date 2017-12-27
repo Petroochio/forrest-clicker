@@ -1,6 +1,5 @@
 import xs from 'xstream';
-import { map, prop, append } from 'ramda';
-import { h } from '@cycle/dom';
+import { prop } from 'ramda';
 import Collection from '@cycle/collection';
 import isolate from '@cycle/isolate';
 
@@ -13,15 +12,17 @@ function view(tree$) {
 
 function TreeCollection(sources) {
   const { DOM, addTree$ } = sources;
-  const initialTree$ = xs.fromArray([[-1.1, 0, 0], [1.1, 0, 0], [0, -1.1, 0], [0, 1.1, 0]])
-    .map(p => ({ position$: xs.of(p) }));
+  const initialTree$ = xs.fromArray([[-1.1, 0, 0], [1.1, 0, 0], [0, -1.1, 0], [0, 1.1, 0]]);
 
   const treeSources = { DOM };
+
+  const newTree$ = addTree$
+    .map(() => [Math.random() + 1, Math.random() - 2, 0]);
 
   const tree$ = Collection(
     isolate(ClickableTree),
     treeSources,
-    initialTree$,
+    xs.merge(initialTree$, newTree$).map(p => ({ position$: xs.of(p) })),
     // prop('remove$'),
   );
   const treeDom$ = Collection.pluck(tree$, prop('DOM'));
